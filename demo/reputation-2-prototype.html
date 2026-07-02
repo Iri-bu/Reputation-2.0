@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reputation 2.0 - prototype</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <style>
         :root {
             --bg: #f4f7fb;
@@ -452,7 +452,7 @@
             border-color: #bfdbfe;
             background:
                 linear-gradient(135deg, rgba(232, 240, 255, 0.92), rgba(255, 255, 255, 0.98)),
-                url("images/banner.png");
+                url("assets/images/banner.png");
             background-size: cover;
             background-position: center;
         }
@@ -655,18 +655,22 @@
         .source-icons {
             display: flex;
             gap: 4px;
+            flex-wrap: wrap;
         }
 
         .source-icon {
-            display: grid;
-            place-items: center;
-            width: 28px;
-            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            min-height: 28px;
+            padding: 0 8px;
             border-radius: 6px;
             background: #eef2ff;
             color: #3730a3;
             font-size: 12px;
             font-weight: 820;
+            white-space: nowrap;
         }
 
         .tag {
@@ -691,15 +695,19 @@
         }
 
         .details-content {
-            display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 16px;
             padding: 4px 0 8px 44px;
         }
 
         .quotes {
             display: grid;
             gap: 10px;
+        }
+
+        .quote-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 16px;
+            align-items: stretch;
         }
 
         blockquote {
@@ -710,6 +718,28 @@
             background: #fff;
             color: #334155;
             line-height: 1.45;
+        }
+
+        .reply-input {
+            width: 100%;
+            min-height: 42px;
+            padding: 0 14px;
+            border: 1px solid #8bb5ff;
+            border-radius: var(--radius);
+            background: #fff;
+            color: var(--text);
+            font: inherit;
+            font-weight: 650;
+        }
+
+        .reply-input::placeholder {
+            color: var(--blue);
+            opacity: 1;
+        }
+
+        .reply-input:focus {
+            outline: 2px solid rgba(49, 104, 199, 0.16);
+            border-color: var(--blue);
         }
 
         mark {
@@ -819,6 +849,10 @@
             color: var(--text);
             font: inherit;
             resize: vertical;
+        }
+
+        .hero-strip {
+            grid-template-columns: 1fr;
         }
 
         @media (max-width: 1180px) {
@@ -1364,8 +1398,10 @@
         }
 
         .source-icon {
-            width: 26px;
-            height: 22px;
+            width: auto;
+            min-width: 26px;
+            height: 24px;
+            padding: 0 7px;
             border: 1px solid #c5d7f5;
             border-radius: 3px;
             background: #f5f9ff;
@@ -1436,6 +1472,11 @@
             .details-content,
             .action-plan {
                 grid-template-columns: minmax(0, 1fr);
+            }
+
+            .quote-item {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 8px;
             }
 
             .page-heading,
@@ -1511,13 +1552,12 @@
                 <a href="#"><span>▣</span> Управление номерами</a>
                 <a href="#"><span>⌂</span> Настройки гостиницы</a>
                 <a href="#"><span>✤</span> Менеджер каналов</a>
-                <a href="#"><span>◎</span> Аналитика <b>А</b></a>
                 <a href="#" class="expanded"><span>▱</span> Репутация</a>
-                <a href="#" class="sub active">Источники</a>
+                <a href="#" class="sub active">Панель качества</a>
+                <a href="#" class="sub">Источники</a>
                 <a href="#" class="sub">Отзывы</a>
                 <a href="#" class="sub">Анализ конкурентов</a>
                 <a href="#" class="sub">Настройки</a>
-                <a href="#" class="sub alert">Админские настройки</a>
                 <a href="#"><span>✉</span> Маркетинг</a>
                 <a href="#"><span>□</span> Документооборот</a>
                 <a href="#"><span>▥</span> Отчеты</a>
@@ -1525,7 +1565,7 @@
                 <a href="#"><span>☷</span> Модуль бронирования</a>
             </nav>
             <div class="manager-card">
-                <img src="images/image-collection/my_collection/image_collection.category_other/lenna.jpg" alt="">
+                <img src="assets/images/manager.jpg" alt="">
                 <div>
                     <span>Сопровождающий менеджер</span>
                     <strong>Иванна Ивановна TEST</strong>
@@ -1554,16 +1594,7 @@
                         <h1>Панель качества</h1>
                         <p class="page-lead">Сводка превращает отзывы, оценки и внутренние опросы в управленческий отчет: где качество растет, где сервис проседает и что вынести на weekly meeting.</p>
                     </div>
-                    <button class="action-button secondary" id="showEmpty">Показать empty state</button>
                 </section>
-                <aside class="hotel-card" aria-label="Контекст объекта">
-                    <img src="images/room_thumb.jpg" alt="">
-                    <div class="hotel-card-content">
-                        <div class="rating">4.7 / 5</div>
-                        <strong>Гостиница «Длинное название»</strong>
-                        <span>Йошкар-Ола · 248 отзывов за период</span>
-                    </div>
-                </aside>
             </div>
 
             <section class="product-filters" aria-label="Фильтры отчета">
@@ -1617,7 +1648,7 @@
                             <div class="kpi-meta down">5 отзывов</div>
                         </article>
                         <article class="card kpi-card">
-                            <div class="kpi-label">Критические сигналы <span class="status-dot bad"></span></div>
+                            <div class="kpi-label">Жалобы требуют внимания <span class="status-dot bad"></span></div>
                             <div class="kpi-value">3</div>
                             <div class="kpi-meta down">сегодня</div>
                         </article>
@@ -1660,17 +1691,17 @@
                                     <strong>42%</strong>
                                 </div>
                                 <div class="source-row">
-                                    <button data-source="public">OTA</button>
+                                    <button data-source="public">Онлайн-агентства</button>
                                     <div class="stack"><span class="positive" style="width: 84%"></span><span class="negative" style="width: 16%"></span></div>
                                     <strong>28%</strong>
                                 </div>
                                 <div class="source-row">
-                                    <button data-source="post">Email</button>
+                                    <button data-source="post">Email-опрос</button>
                                     <div class="stack"><span class="positive" style="width: 69%"></span><span class="negative" style="width: 31%"></span></div>
                                     <strong>19%</strong>
                                 </div>
                                 <div class="source-row">
-                                    <button data-source="stay">In-stay</button>
+                                    <button data-source="stay">Во время проживания</button>
                                     <div class="stack"><span class="positive" style="width: 56%"></span><span class="negative" style="width: 44%"></span></div>
                                     <strong>11%</strong>
                                 </div>
@@ -1683,7 +1714,7 @@
                     <article class="card ai-card" id="aiCard">
                         <div class="ai-head">
                             <div class="ai-title" id="ai-title"><span class="ai-icon">AI</span>Сводка руководителя</div>
-                            <span class="section-note">готово к копированию</span>
+                            <button class="action-button secondary" id="copySummaryInline" type="button">Скопировать сводку</button>
                         </div>
                         <div class="skeletons" aria-hidden="true">
                             <div class="skeleton" style="width: 82%"></div>
@@ -1747,19 +1778,21 @@
                                     <td><span class="score bad">3.8</span></td>
                                     <td><span class="down">▼ -0.8</span></td>
                                     <td><div class="neg-bar"><span style="width: 31%"></span></div></td>
-                                    <td><div class="source-icons"><span class="source-icon">YA</span><span class="source-icon">OTA</span></div></td>
+                                    <td><div class="source-icons"><span class="source-icon">Яндекс</span><span class="source-icon">Онлайн-агентства</span></div></td>
                                     <td><span class="tag">Ресепшен</span></td>
                                 </tr>
                                 <tr class="details-row">
                                     <td colspan="6">
                                         <div class="details-content">
                                             <div class="quotes">
-                                                <blockquote>«Приехали в 13:00, но <mark>ранний заезд</mark> не подтвердили и не объяснили, сколько ждать» · Яндекс</blockquote>
-                                                <blockquote>«На стойке собралась очередь, администратор был один» · OTA</blockquote>
-                                            </div>
-                                            <div class="detail-actions">
-                                                <button class="action-button">Поставить задачу</button>
-                                                <button class="action-button secondary">Ответить гостю</button>
+                                                <div class="quote-item">
+                                                    <blockquote>«Приехали в 13:00, но <mark>ранний заезд</mark> не подтвердили и не объяснили, сколько ждать» · Яндекс</blockquote>
+                                                    <input class="reply-input" type="text" placeholder="Ответить гостю" aria-label="Ответить гостю на отзыв Яндекс">
+                                                </div>
+                                                <div class="quote-item">
+                                                    <blockquote>«На стойке собралась очередь, администратор был один» · Онлайн-агентства</blockquote>
+                                                    <input class="reply-input" type="text" placeholder="Ответить гостю" aria-label="Ответить гостю на отзыв из онлайн-агентства">
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -1769,19 +1802,21 @@
                                     <td><span class="score warn">4.1</span></td>
                                     <td><span class="down">▼ -0.4</span></td>
                                     <td><div class="neg-bar"><span style="width: 22%"></span></div></td>
-                                    <td><div class="source-icons"><span class="source-icon">EM</span><span class="source-icon">IN</span></div></td>
+                                    <td><div class="source-icons"><span class="source-icon">Email-опрос</span><span class="source-icon">Во время проживания</span></div></td>
                                     <td><span class="tag">Хаускипинг</span></td>
                                 </tr>
                                 <tr class="details-row">
                                     <td colspan="6">
                                         <div class="details-content">
                                             <div class="quotes">
-                                                <blockquote>«В ванной был <mark>запах сырости</mark>, номер 208» · Email-опрос</blockquote>
-                                                <blockquote>«Попросили заменить полотенца, реакция была только вечером» · In-stay</blockquote>
-                                            </div>
-                                            <div class="detail-actions">
-                                                <button class="action-button">Поставить задачу</button>
-                                                <button class="action-button secondary">Ответить гостю</button>
+                                                <div class="quote-item">
+                                                    <blockquote>«В ванной был <mark>запах сырости</mark>, номер 208» · Email-опрос</blockquote>
+                                                    <input class="reply-input" type="text" placeholder="Ответить гостю" aria-label="Ответить гостю на email-опрос">
+                                                </div>
+                                                <div class="quote-item">
+                                                    <blockquote>«Попросили заменить полотенца, реакция была только вечером» · Опрос во время проживания</blockquote>
+                                                    <input class="reply-input" type="text" placeholder="Ответить гостю" aria-label="Ответить гостю на in-stay отзыв">
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -1791,19 +1826,21 @@
                                     <td><span class="score good">4.9</span></td>
                                     <td><span class="up">▲ +1.2</span></td>
                                     <td><div class="neg-bar"><span style="width: 4%"></span></div></td>
-                                    <td><div class="source-icons"><span class="source-icon">YA</span><span class="source-icon">EM</span></div></td>
+                                    <td><div class="source-icons"><span class="source-icon">Яндекс</span><span class="source-icon">Email-опрос</span></div></td>
                                     <td><span class="tag">F&amp;B</span></td>
                                 </tr>
                                 <tr class="details-row">
                                     <td colspan="6">
                                         <div class="details-content">
                                             <div class="quotes">
-                                                <blockquote>«Отличный ассортимент, особенно свежая выпечка и фрукты» · Яндекс</blockquote>
-                                                <blockquote>«Официанты быстро убирают столы, стало заметно лучше» · Email-опрос</blockquote>
-                                            </div>
-                                            <div class="detail-actions">
-                                                <button class="action-button">Передать похвалу</button>
-                                                <button class="action-button secondary">Открыть отзывы</button>
+                                                <div class="quote-item">
+                                                    <blockquote>«Отличный ассортимент, особенно свежая выпечка и фрукты» · Яндекс</blockquote>
+                                                    <input class="reply-input" type="text" placeholder="Ответить гостю" aria-label="Ответить гостю на отзыв Яндекс про завтрак">
+                                                </div>
+                                                <div class="quote-item">
+                                                    <blockquote>«Официанты быстро убирают столы, стало заметно лучше» · Email-опрос</blockquote>
+                                                    <input class="reply-input" type="text" placeholder="Ответить гостю" aria-label="Ответить гостю на email-опрос про завтрак">
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -1813,19 +1850,21 @@
                                     <td><span class="score warn">4.0</span></td>
                                     <td><span class="up">▲ +0.4</span></td>
                                     <td><div class="neg-bar"><span style="width: 15%"></span></div></td>
-                                    <td><div class="source-icons"><span class="source-icon">YA</span><span class="source-icon">OTA</span></div></td>
+                                    <td><div class="source-icons"><span class="source-icon">Яндекс</span><span class="source-icon">Онлайн-агентства</span></div></td>
                                     <td><span class="tag">Маркетинг</span></td>
                                 </tr>
                                 <tr class="details-row">
                                     <td colspan="6">
                                         <div class="details-content">
                                             <div class="quotes">
-                                                <blockquote>«Спасибо за быстрый ответ, вопрос решили до выезда» · Яндекс</blockquote>
-                                                <blockquote>«На негативный отзыв пока нет реакции» · OTA</blockquote>
-                                            </div>
-                                            <div class="detail-actions">
-                                                <button class="action-button">Открыть очередь</button>
-                                                <button class="action-button secondary">Назначить ответственного</button>
+                                                <div class="quote-item">
+                                                    <blockquote>«Спасибо за быстрый ответ, вопрос решили до выезда» · Яндекс</blockquote>
+                                                    <input class="reply-input" type="text" placeholder="Ответить гостю" aria-label="Ответить гостю на отзыв Яндекс об ответе">
+                                                </div>
+                                                <div class="quote-item">
+                                                    <blockquote>«На негативный отзыв пока нет реакции» · Онлайн-агентства</blockquote>
+                                                    <input class="reply-input" type="text" placeholder="Ответить гостю" aria-label="Ответить гостю на отзыв из онлайн-агентства без реакции">
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -1864,7 +1903,7 @@
                             <h3>Сегодня</h3>
                             <div class="plan-items">
                                 <div class="plan-item"><strong>Ответы</strong>Закрыть 5 критических отзывов без ответа.</div>
-                                <div class="plan-item"><strong>Контроль</strong>Проверить In-stay жалобы до 18:00.</div>
+                                <div class="plan-item"><strong>Контроль</strong>Проверить жалобы из опросов во время проживания до 18:00.</div>
                             </div>
                         </article>
                     </div>
@@ -1927,10 +1966,6 @@
             simulateAiLoading();
         });
 
-        document.getElementById('showEmpty').addEventListener('click', () => {
-            app.classList.toggle('empty-mode');
-        });
-
         document.querySelectorAll('.matrix-row').forEach((row) => {
             row.addEventListener('click', (event) => {
                 const details = row.nextElementSibling;
@@ -1950,7 +1985,7 @@
             });
         });
 
-        document.getElementById('copySummary').addEventListener('click', async () => {
+        async function copyExecutiveSummary() {
             const text = [
                 'Reputation 2.0: сводка руководителя',
                 'Что изменилось: ухудшилась оценка заселения, выросла оценка завтраков.',
@@ -1976,7 +2011,10 @@
             toast.textContent = copied ? 'Саммари скопировано' : 'Скопируйте текст из поля';
             toast.classList.add('show');
             window.setTimeout(() => toast.classList.remove('show'), 1700);
-        });
+        }
+
+        document.getElementById('copySummary').addEventListener('click', copyExecutiveSummary);
+        document.getElementById('copySummaryInline').addEventListener('click', copyExecutiveSummary);
 
         updateStatus();
     </script>
